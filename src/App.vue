@@ -1,27 +1,11 @@
 <template>
   <div>
     <h1>Resource Table</h1>
+    <input type="text" v-model="this.Name" placeholder="Search by Name" />
+    <input type="text" v-model="this.Year" placeholder="Search by Year" />
+    <input type="text" v-model="this.Color" placeholder="Search by Color" />
     <input
       type="text"
-      @change="handleChange"
-      v-model="this.Name"
-      placeholder="Search by Name"
-    />
-    <input
-      type="text"
-      @change="handleChange"
-      v-model="this.Year"
-      placeholder="Search by Year"
-    />
-    <input
-      type="text"
-      @change="handleChange"
-      v-model="this.Color"
-      placeholder="Search by Color"
-    />
-    <input
-      type="text"
-      @change="handleChange"
       v-model="this.Pantone"
       placeholder="Search by Pantone Value"
     />
@@ -57,14 +41,6 @@ export default {
       Pantone: "",
     };
   },
-  mounted() {
-    this.fetchResources();
-  },
-  updated() {
-    console.log(this.Name, this.Year, this.Color, this.Pantone);
-    console.log(this.filteredResources);
-    console.log(this.resources);
-  },
   methods: {
     async fetchResources() {
       const response = await fetch("https://reqres.in/api/unknown");
@@ -72,7 +48,9 @@ export default {
       this.resources = json.data;
       this.filteredResources = this.resources;
     },
-    handleChange() {
+  },
+  watch: {
+    Name: function () {
       this.filteredResources = this.resources.filter((resource) => {
         return (
           resource.name.toLowerCase().includes(this.Name.toLowerCase()) &&
@@ -91,6 +69,71 @@ export default {
         );
       });
     },
+    Year: function () {
+      this.filteredResources = this.resources.filter((resource) => {
+        return (
+          resource.name.toLowerCase().includes(this.Name.toLowerCase()) &&
+          resource.year
+            .toString()
+            .toLowerCase()
+            .includes(this.Year.toString().toLowerCase()) &&
+          resource.color
+            .toString()
+            .toLowerCase()
+            .includes(this.Color.toString().toLowerCase()) &&
+          resource.pantone_value
+            .toString()
+            .toLowerCase()
+            .includes(this.Pantone.toString().toLowerCase())
+        );
+      });
+    },
+    Color: function () {
+      this.filteredResources = this.resources.filter((resource) => {
+        return (
+          resource.name.toLowerCase().includes(this.Name.toLowerCase()) &&
+          resource.year
+            .toString()
+            .toLowerCase()
+            .includes(this.Year.toString().toLowerCase()) &&
+          resource.color
+            .toString()
+            .toLowerCase()
+            .includes(this.Color.toString().toLowerCase()) &&
+          resource.pantone_value
+            .toString()
+            .toLowerCase()
+            .includes(this.Pantone.toString().toLowerCase())
+        );
+      });
+    },
+    Pantone: function () {
+      this.filteredResources = this.resources.filter((resource) => {
+        return (
+          resource.name.toLowerCase().includes(this.Name.toLowerCase()) &&
+          resource.year
+            .toString()
+            .toLowerCase()
+            .includes(this.Year.toString().toLowerCase()) &&
+          resource.color
+            .toString()
+            .toLowerCase()
+            .includes(this.Color.toString().toLowerCase()) &&
+          resource.pantone_value
+            .toString()
+            .toLowerCase()
+            .includes(this.Pantone.toString().toLowerCase())
+        );
+      });
+    },
+  },
+  mounted() {
+    this.fetchResources();
+  },
+  updated() {
+    console.log(this.Name, this.Year, this.Color, this.Pantone);
+    console.log(this.filteredResources);
+    console.log(this.resources);
   },
 };
 </script>
